@@ -1,0 +1,267 @@
+WindowManager:
+    Main:
+    Record:
+    ShowDialog:
+    Selection:
+    Summarize:
+    KeyPhrases:
+    MeetReport:
+    show_converted:
+<Main>:
+    name: "man"
+    BoxLayout:
+        Button:
+            size_hint: .5,.2
+            pos_hint: {"top":.2}
+            id: record_screen
+            text: 'Record the audio'
+            on_release:
+                app.root.current = "sec"
+                root.manager.transition.direction = "left"
+ 
+        Button:
+            size_hint: .5,.2
+            pos_hint: {"top":.2}
+            id: convert_screen
+            text: 'Convert from a file'
+            on_release:
+                app.root.current = "third"
+                root.manager.transition.direction = "left"
+<Record>:
+    name: "sec"
+    orientation: 'vertical'
+    Label:
+        size_hint: 1,.2
+        pos_hint: {"top":1}
+        id: display_label
+        text: '00:00'
+    BoxLayout:
+        size_hint: 1, .2
+        pos_hint: {"top":.8}
+        BoxLayout:
+            orientation: 'vertical'
+            Label:
+                text: 'Turn on for fixed'
+            Label:
+                text: 'duration recording'
+        Switch:
+            id: duration_switch
+        BoxLayout:
+            orientation: 'vertical'
+            Label:
+                text: 'Enter the duration in'
+            Label:
+                text: 'Seconds'
+        TextInput:
+            id: user_input
+            text: '5'
+            disabled: duration_switch.active == False #TUT 3 IF SWITCH IS OFF TEXTINPUT IS DISABLED
+            on_text: root.check_numeric()                   
+    BoxLayout:
+        pos_hint: {"top":.6}
+        Button:
+            size_hint: .5,.2
+            pos_hint: {"top":1}
+            id: start_button
+            text: 'Start Recording'
+            on_release: root.startRecording_clock()
+        Button:
+            size_hint: .5,.2
+            pos_hint: {"top":1}
+            id: stop_button
+            text: 'Stop Recording'
+            on_release: root.stopRecording()
+            disabled: True
+    BoxLayout:
+        Button:
+            size_hint: .2,.2
+            id: back_1
+            text: 'Back'
+            on_release:
+                app.root.current= "man"
+                root.manager.transition.direction = "right"
+<ShowDialog>:
+    name: "third"
+    file: file_label
+    BoxLayout:
+        pos_hint: {"y":.8}
+        Label:
+            id: file_label
+            size_hint:.8,.2
+            text: 'No file Choosen'
+        Button:
+            id: file_button
+            size_hint: .2,.2
+            text: 'Select File'
+            on_release: root.show_load_list()
+    BoxLayout:
+        pos_hint: {"y":.6}
+        Label:
+            size_hint:.3,.2
+            text: ''
+        Button:
+            id: convert_button
+            size_hint: .4,.2
+            text: 'Convert'
+            on_release: 
+                root.start_converting()
+                
+        Label:
+            size_hint:.3,.2
+            text: ''    
+    BoxLayout:
+        Button:
+            size_hint: .2,.2
+            id: back_1
+            text: 'Back'
+            on_release:
+                app.root.current= "man"
+                root.manager.transition.direction = "right"
+<LoadDialog>:
+    BoxLayout:
+        size: root.size
+        pos: root.pos
+        orientation: "vertical"
+        FileChooserIconView:
+            id: filechooser
+            path: './'
+        BoxLayout:
+            size_hint_y: None
+            height: 30
+            Button:
+                text: "Cancel"
+                on_release: root.cancel()
+            Button:
+                text: "Load"
+                on_release: root.load_list(filechooser.path, filechooser.selection)
+                on_release: root.cancel()
+<show_converted>:
+    name: "sc"
+    Label:
+        text: 'Simple test label'
+<Selection>:
+    name: "sel"
+    BoxLayout:
+        size_hint: 1,.2
+        pos_hint: {"top": 1}
+        Label:
+            text: "Please select an option as per your requirment"
+    BoxLayout:
+        pos_hint: {"y":.6}
+        Label:
+            size_hint:.3,.2
+            text: ''
+        Button:
+            id: sum
+            size_hint: .4,.2
+            text: 'Summarize whole meeting'
+            on_press: 
+                app.root.current= "sum_s"
+                root.manager.transition.direction = "left"
+        Label:
+            size_hint:.3,.2
+            text: ''    
+    BoxLayout:
+        pos_hint: {"y":.4}
+        Label:
+            size_hint:.3,.2
+            text: ''
+        Button:
+            id: key_p
+            size_hint: .4,.2
+            text: 'Get important key phrases'
+            on_press: 
+                app.root.current= "key_p_s"
+                root.manager.transition.direction = "left"
+        Label:
+            size_hint:.3,.2
+            text: ''    
+    BoxLayout:
+        pos_hint: {"y":.2}
+        Label:
+            size_hint:.3,.2
+            text: ''
+        Button:
+            id: meet_r
+            size_hint: .4,.2
+            text: 'Generate meeting report'
+            on_press: 
+                app.root.current= "meet_r_s"
+                root.manager.transition.direction = "left"
+        Label:
+            size_hint:.3,.2
+            text: ''    
+    BoxLayout:
+        Button:
+            size_hint: .2,.2
+            id: back_4
+            text: 'Back'
+            on_release:
+                app.root.current= "third"
+                root.manager.transition.direction = "right"
+    
+<Summarize>:
+    name: "sum_s"
+    BoxLayout:
+        Label:
+            size_hint: .2,.2
+            pos_hint: {"top":1}
+            text: "Enter the size for the meeting summary in percentage"
+    BoxLayout:
+        TextInput:
+            size_hint: .2,.2
+            pos_hint: {"top":.8}
+            id: user_input1
+            text: '5'
+    BoxLayout:
+        Button:
+            size_hint: .2,.2
+            id: back_2
+            text: 'Back'
+            on_release:
+                app.root.current= "sel"
+                root.manager.transition.direction = "right"
+<KeyPhrases>:
+    name: "key_p_s"
+    BoxLayout:
+        Label:
+            size_hint: .2,.2
+            pos_hint: {"top":1}
+            text: "Enter the number of phrases you require"
+    BoxLayout:
+        TextInput:
+            size_hint: .2,.2
+            pos_hint: {"top":.8}
+            id: user_input2
+            text: '5'
+    BoxLayout:
+        Button:
+            size_hint: .2,.2
+            id: back_3
+            text: 'Back'
+            on_release:
+                app.root.current= "sel"
+                root.manager.transition.direction = "right"
+<MeetReport>:
+    name: "meet_r_s"
+    BoxLayout:
+        Label:
+            size_hint: .2,.2
+            pos_hint: {"top":1}
+            text: "Enter the keywords seperated by a comma (,) without any spaces. Example -> word1,word2,word3"
+    BoxLayout:
+        TextInput:
+            size_hint: .2,.2
+            pos_hint: {"top":.8}
+            id: user_input3
+            text: '5'
+    BoxLayout:
+        Button:
+            size_hint: .2,.2
+            id: back_4
+            text: 'Back'
+            on_release:
+                app.root.current= "sel"
+                root.manager.transition.direction = "right"
+
+
